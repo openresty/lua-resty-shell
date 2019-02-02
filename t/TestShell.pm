@@ -11,7 +11,8 @@ add_block_preprocessor(sub {
 
     $http_config .= <<_EOC_;
 
-    lua_package_path "./lib/?.lua;../lua-resty-signal/lib/?.lua;;";
+    lua_package_path "./lib/?.lua;../lua-tablepool/lib/?.lua;../lua-resty-signal/lib/?.lua;../lua-resty-core/lib/?.lua;../lua-resty-lrucache/lib/?.lua;;";
+    lua_package_cpath "../lua-resty-signal/?.so;;";
     init_by_lua_block {
         $init_by_lua_block
     }
