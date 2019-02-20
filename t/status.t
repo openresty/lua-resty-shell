@@ -18,13 +18,17 @@ __DATA__
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'warn "he\n"; print "yes"; exit 1']], nil, 2000)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'warn "he\n"; print "yes"; exit 1']], nil, 2000)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body
@@ -43,13 +47,17 @@ status: 1
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'print "yes"; die;']], nil, 2000)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'print "yes"; die;']], nil, 2000)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body

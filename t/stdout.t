@@ -18,13 +18,17 @@ __DATA__
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'warn "he\n"; print "yes"']], nil, 3000, 3)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'warn "he\n"; print "yes"']], nil, 3000, 3)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body
@@ -43,13 +47,17 @@ status: 0
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run({'perl', '-e', [[warn "he\n"; print "yes"]]}, nil, 3000)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run({'perl', '-e', [[warn "he\n"; print "yes"]]}, nil, 3000)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body
@@ -68,13 +76,17 @@ status: 0
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'warn "he\n"; print "yes!"']], nil, 3000, 3)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'warn "he\n"; print "yes!"']], nil, 3000, 3)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body
@@ -93,14 +105,18 @@ status: nil
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'warn "he\n"; print "yes!!!yes~"']],
-                          nil, 3000, 3)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'warn "he\n"; print "yes!!!yes~"']],
+                              nil, 3000, 3)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body
@@ -119,14 +135,18 @@ status: nil
         content_by_lua_block {
             local say = ngx.say
             local shell = require "resty.shell"
-            local ok, stdout, stderr, reason, status =
-                shell.run([[perl -e 'warn "he\n"; sleep 10; print "yes"']],
-                          nil, 1, 3)
-            say("ok: ", ok)
-            say("stdout: ", stdout)
-            say("stderr: ", stderr)
-            say("reason: ", reason)
-            say("status: ", status)
+
+            do
+                local ok, stdout, stderr, reason, status =
+                    shell.run([[perl -e 'warn "he\n"; sleep 10; print "yes"']],
+                              nil, 1, 3)
+                say("ok: ", ok)
+                say("stdout: ", stdout)
+                say("stderr: ", stderr)
+                say("reason: ", reason)
+                say("status: ", status)
+            end
+            collectgarbage()
         }
     }
 --- response_body_like chomp
