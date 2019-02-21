@@ -29,7 +29,7 @@ local tab_pool_tag = "resty.shell"
 
 
 local function cleanup_proc(proc)
-    local pid = proc.pid()
+    local pid = proc:pid()
     if pid then
         local ok, err = kill(pid, "TERM")
         if not ok then
@@ -126,6 +126,22 @@ function _M.run(cmd, stdin, timeout, max_size)
     local reason, status
     ok, reason, status = proc:wait()
 
+    if ok == nil and reason ~= "exited" then
+        err = reason
+        local ok2, err2 = cleanup_proc(proc)
+        if not ok2 then
+            err = concat_err(err, err2)
+        end
+
+        local stdout = concat(stdout_tab)
+        release_tab(tab_pool_tag, stdout_tab)
+
+        local stderr = concat(stderr_tab)
+        release_tab(tab_pool_tag, stderr_tab)
+
+        return nil, stdout, stderr, "failed to wait process: " .. tostring(err)
+    end
+
     local ok2, stdout_pos, err2 = wait_thread(thr_out)
     if not ok2 then
         local stdout = concat(stdout_tab)
@@ -169,14 +185,6 @@ function _M.run(cmd, stdin, timeout, max_size)
 
     if err2 then
         return nil, stdout, stderr, "failed to read stderr: " .. tostring(err2)
-    end
-
-    if ok == nil and reason ~= "exited" then
-        local ok2, err2 = cleanup_proc(proc)
-        if not ok2 then
-            err = concat_err(err, err2)
-        end
-        return nil, stdout, stderr, "failed to wait process: " .. tostring(err)
     end
 
     return ok, stdout, stderr, reason, status

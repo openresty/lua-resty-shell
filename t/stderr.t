@@ -82,8 +82,8 @@ status: nil
                     shell.run([[perl -e 'print "yes"; sleep 10; warn "he\n";']],
                               nil, 1, 3)
                 say("ok: ", ok)
-                say("stdout: ", stdout)
-                say("stderr: ", stderr)
+                say("stdout: '", stdout, "'")
+                say("stderr: '", stderr, "'")
                 say("reason: ", reason)
                 say("status: ", status)
             end
@@ -92,7 +92,7 @@ status: nil
     }
 --- response_body
 ok: nil
-stdout: 
-stderr: 
-reason: failed to read stdout: timeout
+stdout: ''
+stderr: ''
+reason: failed to wait process: timeout
 status: nil
