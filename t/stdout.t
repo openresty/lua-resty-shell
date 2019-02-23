@@ -154,13 +154,13 @@ status: nil
 stdout: ''
 stderr: '(?:|he
 )'
-reason: failed to wait process: timeout
+reason: failed to wait for process: timeout
 status: nil
 \z
 
 
 
-=== TEST 6: clean up the sub-process when failed to read
+=== TEST 6: clean up the sub-process when failed to wait
 --- config
     location = /t {
         content_by_lua_block {
@@ -179,7 +179,7 @@ status: nil
 ok: nil
 stdout: 'aaaa'
 stderr: ''
-reason: failed to wait process: timeout
+reason: failed to wait for process: timeout
 status: nil
 --- error_log
 lua pipe SIGCHLD fd read pid:

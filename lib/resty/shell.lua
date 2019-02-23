@@ -139,7 +139,8 @@ function _M.run(cmd, stdin, timeout, max_size)
         local stderr = concat(stderr_tab)
         release_tab(tab_pool_tag, stderr_tab)
 
-        return nil, stdout, stderr, "failed to wait process: " .. tostring(err)
+        return nil, stdout, stderr,
+               "failed to wait for process: " .. tostring(err)
     end
 
     local ok2, stdout_pos, err2 = wait_thread(thr_out)

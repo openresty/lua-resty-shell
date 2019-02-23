@@ -94,5 +94,5 @@ status: nil
 ok: nil
 stdout: ''
 stderr: ''
-reason: failed to wait process: timeout
+reason: failed to wait for process: timeout
 status: nil
