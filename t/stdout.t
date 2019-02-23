@@ -141,8 +141,8 @@ status: nil
                     shell.run([[perl -e 'warn "he\n"; sleep 10; print "yes"']],
                               nil, 1, 3)
                 say("ok: ", ok)
-                say("stdout: ", stdout)
-                say("stderr: ", stderr)
+                say("stdout: '", stdout, "'")
+                say("stderr: '", stderr, "'")
                 say("reason: ", reason)
                 say("status: ", status)
             end
@@ -151,9 +151,35 @@ status: nil
     }
 --- response_body_like chomp
 \Aok: nil
-stdout: 
-stderr: (?:|he
-)
-reason: failed to read stdout: timeout
+stdout: ''
+stderr: '(?:|he
+)'
+reason: failed to wait for process: timeout
 status: nil
 \z
+
+
+
+=== TEST 6: clean up the sub-process when failed to wait
+--- config
+    location = /t {
+        content_by_lua_block {
+            local say = ngx.say
+            local shell = require "resty.shell"
+            local ok, stdout, stderr, reason, status =
+                shell.run([[echo aaaaa && sleep 10]], nil, 100, 3)
+            say("ok: ", ok)
+            say("stdout: '", stdout, "'")
+            say("stderr: '", stderr, "'")
+            say("reason: ", reason)
+            say("status: ", status)
+        }
+    }
+--- response_body
+ok: nil
+stdout: 'aaaa'
+stderr: ''
+reason: failed to wait for process: timeout
+status: nil
+--- error_log
+lua pipe SIGCHLD fd read pid:
