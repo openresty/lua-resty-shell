@@ -49,7 +49,12 @@ faster.
 When stdin is nil or an empty string, the stdin device will get closed immediately.
 
 The `timeout` parameter speifies the timeout threshold for stderr/stdout reading timeout,
-the stdin writing timeout, and the process waiting timeout, respectively.
+the stdin writing timeout, and the process waiting timeout, respectively. If the timeout
+threshold is exceeded, the sub-process will be killed by first a SIGTERM. Then we will
+wait for 1ms and send a SIGKILL to kill the sub-process.
+
+Note that we do not automatically kill the child processes of the sub-process (if there are),
+you may need to clean up them by yourself.
 
 The `max_size` parameter specifies the maximum size allowed for each output data stream of
 stdout and stderr. When exceeding the limit, the `run()` function will immediately
