@@ -48,7 +48,7 @@ faster.
 
 When stdin is nil or an empty string, the stdin device will get closed immediately.
 
-The `timeout` parameter speifies the timeout threshold for stderr/stdout reading timeout,
+The `timeout` parameter speifies the timeout threshold in milliseconds for stderr/stdout reading timeout,
 the stdin writing timeout, and the process waiting timeout, respectively.
 
 The `max_size` parameter specifies the maximum size allowed for each output data stream of
