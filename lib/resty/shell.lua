@@ -49,7 +49,7 @@ local function concat_err(err1, err2)
 end
 
 
-local function read_stream(proc, buf, timeout, max_size, meth_name)
+local function read_stream(proc, buf, max_size, meth_name)
     local pos = 1
     local len = 0
 
@@ -118,10 +118,10 @@ function _M.run(cmd, stdin, timeout, max_size)
     local stdout_tab = fetch_tab(tab_pool_tag, 4, 0)
     local stderr_tab = fetch_tab(tab_pool_tag, 4, 0)
 
-    local thr_out = spawn_thread(read_stream, proc, stdout_tab, timeout,
-                                 max_size, "stdout_read_any")
-    local thr_err = spawn_thread(read_stream, proc, stderr_tab, timeout,
-                                 max_size, "stderr_read_any")
+    local thr_out = spawn_thread(read_stream, proc, stdout_tab, max_size,
+                                 "stdout_read_any")
+    local thr_err = spawn_thread(read_stream, proc, stderr_tab, max_size,
+                                 "stderr_read_any")
 
     local reason, status
     ok, reason, status = proc:wait()
