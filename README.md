@@ -19,9 +19,11 @@ Synopsis
 
 ```lua
 local shell = require "resty.shell"
+
 local stdin = "hello"
 local timeout = 1000  -- ms
 local max_size = 4096  -- byte
+
 local ok, stdout, stderr, reason, status =
     shell.run([[perl -e 'warn "he\n"; print <>']], stdin, timeout, max_size)
 if not ok then
@@ -37,33 +39,48 @@ run
 
 **syntax:** `ok, stdout, stderr, reason, status = shell.run(cmd, stdin?, timeout?, max_size?)`
 
-**context:** `any phases supporting yielding`
+**context:** `all phases supporting yielding`
 
 Runs a shell command, `cmd`, with an optional stdin.
 
-The `cmd` argument can either be a single string value, like `"echo 'hello, world'"`,
-or an array-like Lua table, like `{"echo", "hello, world"}`. The former form is
-equivalent to `{"/bin/sh", "-c", "echo 'hello, world'"}`, but just a little bit
-faster.
+The `cmd` argument can either be a single string value (e.g. `"echo 'hello,
+world'"`) or an array-like Lua table (e.g. `{"echo", "hello, world"}`). The
+former is equivalent to `{"/bin/sh", "-c", "echo 'hello, world'"}`, but simpler
+and slightly faster.
 
-When stdin is nil or an empty string, the stdin device will get closed immediately.
+When the `stdin` argument is `nil` or `""`, the stdin device will immediately
+be closed.
 
-The `timeout` parameter speifies the timeout threshold in milliseconds for stderr/stdout reading timeout,
-the stdin writing timeout, and the process waiting timeout, respectively.
+The `timeout` argument specifies the timeout threshold (in ms) for
+stderr/stdout reading timeout, stdin writing timeout, and process waiting
+timeout.
 
-The `max_size` parameter specifies the maximum size allowed for each output data stream of
-stdout and stderr. When exceeding the limit, the `run()` function will immediately
-stop reading any more data from the stream and returns an error string in the `reason` return
-value like `"failed to read stdout: too much data"`.
+The `max_size` argument specifies the maximum size allowed for each output
+data stream of stdout and stderr. When exceeding the limit, the `run()`
+function will immediately stop reading any more data from the stream and return
+an error string in the `reason` return value: `"failed to read stdout: too much
+data"`.
 
-When the sub-process terminates by itself, the `reason` return value will be `"exit"`
-and the `status` return value will be the exit code returned by the sub-process.
+Upon terminating successfully (with a zero exit status), `ok` will be `true`,
+`reason` will be `"exit"`, and `status` will hold the sub-process exit status.
 
-When the sub-process is terminated by some UNIX signals, the `reason` return value
+Upon terminating abnormally (non-zero exit status), `ok` will be `false`,
+`reason` will be `"exit"`, and `status` will hold the sub-process exit status.
+
+Upon exceeding a timeout threshold or any other unexpected error, `ok` will be
+`nil`, and `reason` will be a string describing the error.
+
+When a timeout threshold is exceeded, the sub-process will be terminated as
+such:
+
+1. first, by receiving a `SIGTERM` signal from this library,
+2. then, after 1ms, by receiving a `SIGKILL` signal from this library.
+
+Note that child processes of the sub-process (if any) will not be terminated.
+You may need to terminate these processes yourself.
+
+When the sub-process is terminated by a UNIX signal, the `reason` return value
 will be `"signal"` and the `status` return value will hold the signal number.
-
-The first return value, `ok`, will only take a true value (`true`) when the process
-is exited successfully (with the zero status code).
 
 [Back to TOC](#table-of-contents)
 
