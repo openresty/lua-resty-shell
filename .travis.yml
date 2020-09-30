@@ -18,7 +18,7 @@ env:
     - LUAJIT_INC=$LUAJIT_PREFIX/include/luajit-2.1
     - LD_LIBRARY_PATH=$LUAJIT_LIB:$LD_LIBRARY_PATH
   matrix:
-    - NGINX_VERSION=1.19.2
+    - NGINX_VERSION=1.19.3
 
 install:
   - sudo apt-get install -qq -y cpanminus axel
@@ -31,7 +31,7 @@ install:
   - git clone https://github.com/openresty/lua-resty-lrucache.git ../lua-resty-lrucache
   - git clone https://github.com/openresty/lua-resty-signal.git ../lua-resty-signal
   - git clone https://github.com/openresty/lua-tablepool.git ../lua-tablepool
-  - git clone -b 1.19.2.x https://github.com/xiaocang/no-pool-nginx.git ../no-pool-nginx
+  - git clone -b 1.19.3.x https://github.com/xiaocang/no-pool-nginx.git ../no-pool-nginx
   - git clone -b v2.1-agentzh https://github.com/openresty/luajit2.git
 
 script:
