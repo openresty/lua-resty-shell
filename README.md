@@ -53,7 +53,7 @@ be closed.
 
 The `timeout` argument specifies the timeout threshold (in ms) for
 stderr/stdout reading timeout, stdin writing timeout, and process waiting
-timeout.
+timeout. The default is 10 seconds as per https://github.com/openresty/lua-resty-core/blob/master/lib/ngx/pipe.md#set_timeouts
 
 The `max_size` argument specifies the maximum size allowed for each output
 data stream of stdout and stderr. When exceeding the limit, the `run()`
