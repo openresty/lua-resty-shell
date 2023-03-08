@@ -59,7 +59,7 @@ The `max_size` argument specifies the maximum size allowed for each output
 data stream of stdout and stderr. When exceeding the limit, the `run()`
 function will immediately stop reading any more data from the stream and return
 an error string in the `reason` return value: `"failed to read stdout: too much
-data"`.
+data"`. The default value of the `max_size` argument is 128 KB.
 
 Upon terminating successfully (with a zero exit status), `ok` will be `true`,
 `reason` will be `"exit"`, and `status` will hold the sub-process exit status.

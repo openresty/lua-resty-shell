@@ -1,5 +1,5 @@
 sudo: required
-dist: bionic
+dist: focal
 
 os: linux
 
@@ -20,8 +20,8 @@ env:
     - NGINX_VERSION=1.19.9
 
 install:
-  - sudo apt-get install -qq -y cpanminus axel
-  - sudo cpanm --notest Test::Nginx > build.log 2>&1 || (cat build.log && exit 1)
+  - sudo apt-get install -qq -y axel
+  - cpanm --sudo --notest Test::Nginx > build.log 2>&1 || (cat build.log && exit 1)
   - git clone https://github.com/openresty/openresty.git ../openresty
   - git clone https://github.com/openresty/nginx-devel-utils.git
   - git clone https://github.com/simpl/ngx_devel_kit.git ../ndk-nginx-module
